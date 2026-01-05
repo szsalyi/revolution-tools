@@ -103,3 +103,6 @@ CUSTOM_RULES_PRODUCTION_READY.md
 
 # Documentation and test data (potentially sensitive)
 docs/
+
+# All markdown files in project root (keep docs private)
+/*.md
