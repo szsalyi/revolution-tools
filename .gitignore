@@ -101,5 +101,5 @@ BRAINSTORMING.md
 PRODUCTION_WORKFLOW.md
 CUSTOM_RULES_PRODUCTION_READY.md
 
-# Test data with potentially sensitive info
-docs/test-data/
+# Documentation and test data (potentially sensitive)
+docs/
