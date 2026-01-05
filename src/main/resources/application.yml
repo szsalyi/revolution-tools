@@ -1,0 +1,143 @@
+spring:
+  application:
+    name: revolution-tools
+
+  # Virtual Threads Configuration (Java 21+)
+  threads:
+    virtual:
+      enabled: true
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+  # Cache Configuration
+  cache:
+    type: simple
+    cache-names:
+      - gameData
+      - statistics
+
+  # Profiles
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+# Server Configuration
+server:
+  port: ${SERVER_PORT:8080}
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    accept-count: 100
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  error:
+    include-message: always
+    include-stacktrace: on_param
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.revolution.tools: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Revolution Tools Configuration
+revolution:
+  data-collection:
+    enabled: ${DATA_COLLECTION_ENABLED:true}
+    interval-seconds: ${DATA_COLLECTION_INTERVAL:5}
+    batch-size: ${DATA_COLLECTION_BATCH_SIZE:100}
+
+  # Rule Engine Configuration
+  rules:
+    enabled: true
+    evaluation-interval-seconds: 5
+    max-notifications-per-session: 100
+    notification-cooldown-seconds: 60
+    debug-logging: false
+
+# Claude AI Configuration
+claude:
+  enabled: ${CLAUDE_ENABLED:true}
+  api-key: ${CLAUDE_API_KEY}
+  model: ${CLAUDE_MODEL:claude-3-5-sonnet-20241022}
+  max-tokens: ${CLAUDE_MAX_TOKENS:4096}
+  temperature: ${CLAUDE_TEMPERATURE:0.7}
+  timeout-seconds: ${CLAUDE_TIMEOUT:60}
+
+# Roulette Screenshot Watcher Configuration
+roulette:
+  screenshot:
+    watcher:
+      # Enable/disable automatic screenshot monitoring
+      enabled: ${ROULETTE_SCREENSHOT_WATCHER_ENABLED:false}
+
+      # Directory to monitor for new screenshots
+      # macOS default: ~/Desktop/RouletteScreenshots
+      # Windows: C:/Users/<username>/Desktop/RouletteScreenshots
+      # Linux: ~/Desktop/RouletteScreenshots
+      directory: ${ROULETTE_SCREENSHOT_DIR:${user.home}/Desktop/RouletteScreenshots}
+
+      # Delay before processing new file (ms) - allows file to be fully written
+      process-delay-ms: 500
+
+      # Archive successfully processed screenshots
+      archive-processed: true
+
+      # Delete processed screenshots after archiving (false = move to processed/ folder)
+      delete-after-processing: false
+
+      # Move failed screenshots to errors/ folder
+      move-errors: true
+
+# Resilience4j Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      claudeAI:
+        register-health-indicator: true
+        sliding-window-size: 10
+        minimum-number-of-calls: 3
+        permitted-number-of-calls-in-half-open-state: 2
+        wait-duration-in-open-state: 30s
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 100
+        slow-call-duration-threshold: 10s
+
+  retry:
+    instances:
+      claudeAI:
+        max-attempts: 3
+        wait-duration: 2s
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+          - java.io.IOException

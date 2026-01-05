@@ -1,0 +1,51 @@
+spring:
+  # H2 In-Memory Database for Development
+  datasource:
+    url: jdbc:h2:mem:revolutiondb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+    # HikariCP Configuration for Development
+    hikari:
+      # Pool sizing - small for H2 in-memory
+      minimum-idle: 2
+      maximum-pool-size: 10
+
+      # Connection timeouts
+      connection-timeout: 20000      # 20 seconds to get connection
+      idle-timeout: 300000           # 5 minutes idle before eviction
+      max-lifetime: 1800000          # 30 minutes max connection lifetime
+
+      # Keepalive to detect stale connections after Mac sleep
+      keepalive-time: 300000         # 5 minutes - ping idle connections
+
+      # Connection leak detection (generous for dev/debugging)
+      leak-detection-threshold: 60000 # 60 seconds
+
+      # Pool behavior
+      auto-commit: true
+      connection-test-query: SELECT 1
+
+      # Logging
+      pool-name: RevolutionToolsHikariPool
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+# Development Logging
+logging:
+  level:
+    root: INFO
+    com.revolution.tools: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+

@@ -1,0 +1,47 @@
+spring:
+  # PostgreSQL Database for Production
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/revolutiondb}
+    driver-class-name: org.postgresql.Driver
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+# Production Logging
+logging:
+  level:
+    root: WARN
+    com.revolution.tools: INFO
+    org.springframework.web: WARN
+  file:
+    name: /var/log/revolution-tools/application.log
+    max-size: 10MB
+    max-history: 30
+
+# Playwright Configuration for Production
+revolution:
+  playwright:
+    headless: true
+    browser: chromium
+
+  data-collection:
+    enabled: true
+    interval-seconds: 60
+
+# Security Configuration
+server:
+  ssl:
+    enabled: ${SSL_ENABLED:false}
+    key-store: ${SSL_KEYSTORE_PATH}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: PKCS12

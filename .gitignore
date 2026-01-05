@@ -1,0 +1,105 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# VS Code
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# macOS
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Java
+*.class
+*.log
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# Spring Boot
+spring-boot-devtools.properties
+application-local.yml
+
+# Secrets and credentials
+*.env
+.env
+.env.local
+.env.*.local
+credentials.json
+secret.properties
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Database
+*.db
+*.sqlite
+*.h2.db
+
+# Playwright
+playwright-report/
+test-results/
+downloads/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Claude Code and AI Assistant files
+.claude/
+.mcp.json
+*_SUMMARY.md
+*_STATUS.md
+*_ASSESSMENT.md
+
+# Planning and brainstorming documents (sensitive strategy)
+BRAINSTORMING.md
+*_PLAN.md
+*_IMPLEMENTATION_PLAN.md
+PRODUCTION_WORKFLOW.md
+CUSTOM_RULES_PRODUCTION_READY.md
+
+# Test data with potentially sensitive info
+docs/test-data/
